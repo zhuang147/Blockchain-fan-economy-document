@@ -9,7 +9,7 @@ flowchart LR
     classDef storageNode fill:#ffffff,stroke:#888888,stroke-width:2px,color:#333333,rx:8,ry:8
 
     %% 第一層：使用者互動層
-    subgraph Layer1 ["【 第一層：使用者互動層 User Interface Layer　】(純 Web2 UX)"]
+    subgraph Layer1 ["【 第一層：使用者互動層 User Interface Layer 】(純 Web2 UX)"]
         direction TB
         
         subgraph FanEnd ["📱 粉絲端 App / Web 介面"]
