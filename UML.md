@@ -1,3 +1,4 @@
+## Use Case Diagram
 ```mermaid
 flowchart LR
     %% 定義參與者
@@ -44,3 +45,5 @@ flowchart LR
     class Fan,Admin,SC,Pay actor;
     class UC1,UC2,UC3,UC4,UC5,UC6 usecase;
 ```
+---
+## 循環圖
