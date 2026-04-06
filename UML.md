@@ -3,41 +3,49 @@
 打卡領取數位足跡是任務卡領取福利，跟智能合約也無關
 ```mermaid
 flowchart LR
-    %% 定義左側主動參與者
-    Fan(["🧑‍🎤 粉絲 (User)"])
+    %% Actors
+    Fan(["🧑‍🎤 粉絲"])
     Admin(["🏢 官方管理者"])
+    Pay(["💳 金流服務"])
+    Blockchain(["⛓️ 區塊鏈服務"])
 
-    %% 定義系統邊界與模組 (移除 direction TB 讓畫面更容易向兩側展開)
-    subgraph SystemBoundary [Web2.5 粉絲互動生態系 App]
-        
-        subgraph TicketSystem [智慧票務與退讓票模組]
-            UC1([實名身分驗證 KYC])
-            UC2([購買門票與付款])
-            UC3([分配同行者票券])
-            UC4([申請官方退讓票])
+    %% System Boundary
+    subgraph System [Web2.5 粉絲互動生態系]
+        direction LR
+
+        %% 主流程
+        UC0([參與演唱會完整流程])
+
+        subgraph Ticket [票務系統]
+            UC1([完成身份驗證（防黃牛）])
+            UC2([購買門票（信用卡支付）])
+            UC3([轉讓門票給朋友])
+            UC4([透過官方退票池轉售])
         end
 
-        subgraph MerchSystem [實體周邊防偽模組]
-            UC5([掃描周邊防偽驗證])
-            UC6([轉移數位所有權])
+        subgraph Merch [周邊系統]
+            UC5([驗證周邊真偽])
+            UC6([轉讓周邊所有權])
         end
 
-        subgraph LoyaltySystem [長效忠誠度模組]
-            UC7([打卡領取數位足跡])
-            UC8([兌換專屬福利])
+        subgraph FanSystem [粉絲長尾系統]
+            UC7([完成任務取得數位足跡])
+            UC8([兌換粉絲專屬福利])
         end
 
-        subgraph AdminSystem [後台管理模組]
-            UC9([上架活動與門票])
-            UC10([管理候補與退票池])
+        subgraph AdminSystem [後台管理]
+            UC9([設定任務與活動])
+            UC10([管理票務與退票池])
         end
     end
 
-    %% 定義右側外部依賴系統
-    SC(["⛓️ 智慧合約 (Smart Contract)"])
-    Pay(["💳 第三方金流 (Payment API)"])
+    %% 主流程關聯
+    Fan --- UC0
+    UC0 --> UC2
+    UC0 --> UC7
+    UC0 --> UC8
 
-    %% 左側粉絲主動互動連線 (實線)
+    %% 粉絲互動
     Fan --- UC1
     Fan --- UC2
     Fan --- UC3
@@ -47,30 +55,20 @@ flowchart LR
     Fan --- UC7
     Fan --- UC8
 
-    %% 左側官方管理者互動連線 (實線)
-    Admin --- UC1
+    %% 官方互動
     Admin --- UC9
     Admin --- UC10
+    Admin --- UC7
+    Admin --- UC8
 
-    %% 右側外部系統被動呼叫連線 (虛線，代表系統依賴)
-    UC2 -.- Pay
-    UC2 -.- SC
-    UC3 -.- SC
-    UC4 -.- SC
-    UC5 -.- SC
-    UC6 -.- SC
-    UC7 -.- SC
-
-    %% 樣式與排版設定
-    classDef actor fill:#f9f9f9,stroke:#333,stroke-width:2px;
-    classDef usecase fill:#fad7d4,stroke:#d32f2f,stroke-width:1px;
-    classDef package fill:#e3f2fd,stroke:#1565c0,stroke-width:1px;
-    classDef boundary fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
-
-    class Fan,Admin,SC,Pay actor;
-    class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC10 usecase;
-    class TicketSystem,MerchSystem,LoyaltySystem,AdminSystem package;
-    class SystemBoundary boundary;
+    %% 外部系統（Web2.5 重點🔥）
+    UC2 --- Pay
+    UC2 --- Blockchain
+    UC3 --- Blockchain
+    UC4 --- Blockchain
+    UC5 --- Blockchain
+    UC6 --- Blockchain
+    UC7 --- Blockchain
 ```
 ---
 ## 循環圖
