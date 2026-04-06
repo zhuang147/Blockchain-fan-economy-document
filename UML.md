@@ -3,49 +3,44 @@
 打卡領取數位足跡是任務卡領取福利，跟智能合約也無關
 ```mermaid
 flowchart LR
-    %% Actors
-    Fan(["🧑‍🎤 粉絲"])
+    %% 定義左側主動參與者
+    Fan(["🧑‍🎤 粉絲 (User)"])
     Admin(["🏢 官方管理者"])
-    Pay(["💳 金流服務"])
-    Blockchain(["⛓️ 區塊鏈服務"])
 
-    %% System Boundary
-    subgraph System [Web2.5 粉絲互動生態系]
+    %% 系統邊界與模組
+    subgraph SystemBoundary [Web2.5 粉絲互動生態系 App]
         direction LR
-
-        %% 主流程
-        UC0([參與演唱會完整流程])
-
-        subgraph Ticket [票務系統]
-            UC1([完成身份驗證（防黃牛）])
-            UC2([購買門票（信用卡支付）])
-            UC3([轉讓門票給朋友])
-            UC4([透過官方退票池轉售])
+        
+        subgraph TicketSystem [智慧票務與退讓票模組]
+            UC1([實名身分驗證 KYC])
+            UC2([購買門票與付款])
+            UC3([分配同行者票券])
+            UC4([申請官方退讓票])
         end
 
-        subgraph Merch [周邊系統]
-            UC5([驗證周邊真偽])
-            UC6([轉讓周邊所有權])
+        subgraph MerchSystem [實體周邊 NFT 防偽模組]
+            UC5([掃描 NFC 驗證 NFT 真偽])
+            UC6([移轉 NFT 所有權])
         end
 
-        subgraph FanSystem [粉絲長尾系統]
-            UC7([完成任務取得數位足跡])
-            UC8([兌換粉絲專屬福利])
+        subgraph LongTailSystem [粉絲價值長尾模組]
+            UC7([任務打卡領取數位足跡])
+            UC8([憑證兌換專屬長尾福利])
         end
 
-        subgraph AdminSystem [後台管理]
-            UC9([設定任務與活動])
-            UC10([管理票務與退票池])
+        subgraph AdminSystem [後台管理模組]
+            UC9([發布活動與設定任務])
+            UC10([數據監控與退票池管理])
         end
     end
 
-    %% 主流程關聯
-    Fan --- UC0
-    UC0 --> UC2
-    UC0 --> UC7
-    UC0 --> UC8
+    %% 定義右側外部依賴
+    Blockchain(["⛓️ 區塊鏈 / NFT 基礎設施"])
+    Pay(["💳 第三方金流 API"])
 
-    %% 粉絲互動
+    %% --- 連線關係 ---
+
+    %% 粉絲互動 (實線)
     Fan --- UC1
     Fan --- UC2
     Fan --- UC3
@@ -55,20 +50,37 @@ flowchart LR
     Fan --- UC7
     Fan --- UC8
 
-    %% 官方互動
+    %% 管理者互動 (實線)
+    Admin --- UC1
     Admin --- UC9
     Admin --- UC10
-    Admin --- UC7
-    Admin --- UC8
+    %% 官方設定任務
+    Admin --- UC7 
+    %% 官方管理福利發放
+    Admin --- UC8 
 
-    %% 外部系統（Web2.5 重點🔥）
-    UC2 --- Pay
-    UC2 --- Blockchain
-    UC3 --- Blockchain
-    UC4 --- Blockchain
-    UC5 --- Blockchain
-    UC6 --- Blockchain
-    UC7 --- Blockchain
+    %% 系統自動化呼叫 (虛線)
+    UC2 -.- Pay
+    UC2 -.- Blockchain
+    UC3 -.- Blockchain
+    UC4 -.- Blockchain
+    %% 驗證 NFT
+    UC5 -.- Blockchain 
+    %% 轉移資產
+    UC6 -.- Blockchain 
+    %% 派發 POAP/SBT 數位足跡
+    UC7 -.- Blockchain 
+
+    %% 樣式設定
+    classDef actor fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef usecase fill:#fad7d4,stroke:#d32f2f,stroke-width:1px;
+    classDef package fill:#e3f2fd,stroke:#1565c0,stroke-width:1px;
+    classDef boundary fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
+
+    class Fan,Admin,Blockchain,Pay actor;
+    class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC10 usecase;
+    class TicketSystem,MerchSystem,LongTailSystem,AdminSystem package;
+    class SystemBoundary boundary;
 ```
 ---
 ## 循環圖
