@@ -71,27 +71,27 @@ graph LR
 ---
 ```mermaid
 graph LR
-    %% --- 左側：參與者 (Actors) ---
+    %% --- 1. 定義參與者 (Actors) ---
     subgraph Left_Actors ["使用者與管理者"]
         direction TB
         User((🧑‍🎤 粉絲 User))
         Admin((🏢 官方 Admin))
     end
 
-    %% --- 中間：平台核心功能 (System Boundary) ---
+    %% --- 2. 系統功能邊界 (System Boundary) ---
     subgraph Platform ["Web2.5 平台系統邊界"]
         direction TB
         
-        subgraph Mod1 ["智慧票務與退讓票"]
+        subgraph Mod1 ["智慧票務 (純 NFT 模式)"]
             UC1([實名 KYC])
-            UC2([購買門票/付款])
+            UC2([購票付款/鑄造 NFT])
             UC3([分配同行者 SBT])
             UC4([申請官方退讓票])
         end
 
-        subgraph Mod2 ["實體周邊 NFT 防偽"]
-            UC5([掃描 NFC 驗證])
-            UC6([移轉 NFT 所有權])
+        subgraph Mod2 ["實體周邊 (NFC + NFT 模式)"]
+            UC5([掃描 NFC 驗證真偽])
+            UC6([移轉周邊所有權])
         end
 
         subgraph Mod3 ["粉絲價值長尾"]
@@ -99,22 +99,22 @@ graph LR
             UC8([兌換專屬福利])
         end
 
-        subgraph Mod4 ["後台數據與發布"]
-            UC9([發布活動/NFT])
-            UC10([監控數據/退票池])
+        subgraph Mod4 ["後台數據與管理"]
+            UC9([發布活動/周邊/門票])
+            UC10([監控數據/退票池管理])
         end
     end
 
-    %% --- 右側：技術基礎設施 ---
+    %% --- 3. 外部基礎設施 (Infrastructure) ---
     subgraph Infra ["外部基礎設施"]
         direction TB
         BC[("⛓️ 區塊鏈基礎設施")]
         Pay["💳 第三方金流 API"]
     end
 
-    %% --- 關聯檢查 ---
+    %% --- 4. 關聯線關係 (Associations) ---
 
-    %% 1. 粉絲相關：所有終端功能
+    %% 粉絲操作：票務、周邊、長尾
     User --- UC1
     User --- UC2
     User --- UC3
@@ -124,26 +124,27 @@ graph LR
     User --- UC7
     User --- UC8
 
-    %% 2. 官方相關：管理、發布、監控、介入受控交易
-    Admin --- UC9    
-    Admin --- UC10   
-    Admin --- UC4    
-    Admin --- UC6    
+    %% 官方管理：票務退讓、周邊轉移監控、後台管理
+    Admin --- UC9
+    Admin --- UC10
+    Admin --- UC4
+    Admin --- UC6
 
-    %% 3. 第三方 API：僅與金流相關
+    %% 第三方 API 連線
     UC2 --- Pay
 
-    %% 4. 區塊鏈連線：僅與「資產鑄造/變動」相關
-    UC3 --- BC    
-    UC4 --- BC   
-    UC6 --- BC   
-    UC7 --- BC   
-    UC10 --- BC  
+    %% 區塊鏈連線：所有資產變動 (SBT/NFT/POAP)
+    UC2 --- BC
+    UC3 --- BC
+    UC4 --- BC
+    UC6 --- BC
+    UC7 --- BC
+    UC10 --- BC
 
-    %% 5. 內部邏輯：購票必須實名
+    %% 內部包含邏輯
     UC2 -.->|include| UC1
 
-    %% --- 樣式設定 ---
+    %% --- 5. 視覺樣式設定 ---
     style User fill:#fdf,stroke:#f6f,stroke-width:2px
     style Admin fill:#ddf,stroke:#66f,stroke-width:2px
     style Platform fill:#fff,stroke:#333,stroke-width:1px
