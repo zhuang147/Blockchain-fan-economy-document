@@ -112,9 +112,9 @@ graph LR
         Pay["💳 第三方金流 API"]
     end
 
-    %% --- 關聯線定義 ---
+    %% --- 關聯檢查 ---
 
-    %% 粉絲連線
+    %% 1. 粉絲相關：所有終端功能
     User --- UC1
     User --- UC2
     User --- UC3
@@ -124,24 +124,26 @@ graph LR
     User --- UC7
     User --- UC8
 
-    %% 官方管理連線 (修正版：移除行尾註解避免報錯)
-    Admin --- UC9
-    Admin --- UC10
-    Admin --- UC4
-    Admin --- UC6
+    %% 2. 官方相關：管理、發布、監控、介入受控交易
+    Admin --- UC9    
+    Admin --- UC10   
+    Admin --- UC4    
+    Admin --- UC6    
 
-    %% 平台功能與外部系統連線
+    %% 3. 第三方 API：僅與金流相關
     UC2 --- Pay
-    UC3 --- BC
-    UC4 --- BC
-    UC6 --- BC
-    UC7 --- BC
-    UC10 --- BC
 
-    %% 內部包含關係
+    %% 4. 區塊鏈連線：僅與「資產鑄造/變動」相關
+    UC3 --- BC    
+    UC4 --- BC   
+    UC6 --- BC   
+    UC7 --- BC   
+    UC10 --- BC  
+
+    %% 5. 內部邏輯：購票必須實名
     UC2 -.->|include| UC1
 
-    %% --- 樣式美化 ---
+    %% --- 樣式設定 ---
     style User fill:#fdf,stroke:#f6f,stroke-width:2px
     style Admin fill:#ddf,stroke:#66f,stroke-width:2px
     style Platform fill:#fff,stroke:#333,stroke-width:1px
