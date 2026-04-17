@@ -1,5 +1,5 @@
-flowchart LR
 ```mermaid
+flowchart LR
     %% 定義顏色與樣式 (安全色碼與圓角)
     classDef uiNode fill:#ffffff,stroke:#007acc,stroke-width:2px,color:#333333,rx:8,ry:8
     classDef midNode fill:#ffffff,stroke:#db7093,stroke-width:2px,color:#333333,rx:8,ry:8
