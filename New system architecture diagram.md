@@ -1,14 +1,16 @@
 ```mermaid
-flowchart TB
-    %% 全域設定：調整連線上的文字大小與粗細
-    linkStyle default font-size:14px, font-weight:bold;
+ flowchart TB
+    %% 全域設定：將連線上的文字大幅放大並加粗
+    linkStyle default font-size:18px, font-weight:bold;
 
-    %% 定義顏色與樣式 (加入字體放大、粗體與圓角設定)
-    classDef uiNode fill:#ffffff,stroke:#007acc,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:16px,font-weight:bold
-    classDef midNode fill:#ffffff,stroke:#db7093,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:16px,font-weight:bold
-    classDef blockNode fill:#ffffff,stroke:#2e8b57,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:16px,font-weight:bold
-    classDef storageNode fill:#ffffff,stroke:#888888,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:16px,font-weight:bold
-    classDef layerStyle fill:#f9fbff,stroke:#bbbbbb,stroke-width:2px,stroke-dasharray: 5 5,font-size:18px,font-weight:bold
+    %% 定義顏色與樣式 (字體全面放大至 22px)
+    classDef uiNode fill:#ffffff,stroke:#007acc,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:22px,font-weight:bold
+    classDef midNode fill:#ffffff,stroke:#db7093,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:22px,font-weight:bold
+    classDef blockNode fill:#ffffff,stroke:#2e8b57,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:22px,font-weight:bold
+    classDef storageNode fill:#ffffff,stroke:#888888,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:22px,font-weight:bold
+    
+    %% 外層標題樣式 (字體放大至 26px)
+    classDef layerStyle fill:#f9fbff,stroke:#bbbbbb,stroke-width:2px,stroke-dasharray: 5 5,font-size:26px,font-weight:bold
 
     %% 第一層：使用者互動層
     subgraph Layer1 ["【 第一層：使用者互動層 User Interface Layer 】(純 Web2 UX)"]
@@ -49,7 +51,7 @@ flowchart TB
         IPFS[("📦 去中心化儲存 (IPFS/DB)\n(官方票券元數據 / 用戶心情日記)")]:::storageNode
     end
 
-    %% 替外層的 Subgraph 套用樣式，增加區隔感
+    %% 替外層的 Subgraph 套用標題放大樣式
     class Layer1,Layer2,Layer3 layerStyle;
 
     %% ---------------- 互動關係線 ----------------
@@ -60,7 +62,7 @@ flowchart TB
     F3 -.->|"API: 發起轉讓/輸入候補碼"| M3
     F4 -.->|"API: 硬體加密驗證"| M4
     
-    %% Live Feed 的雙向資料流 (由後端 M3 統一代為上傳 IPFS)
+    %% Live Feed 的雙向資料流
     M3 -.->|"WebSocket: 即時廣播交易動態"| F5
     F5 -.->|"API: 發布回憶錄"| M3
 
@@ -75,7 +77,7 @@ flowchart TB
     A2 ====>|"寫入任務規則"| SC2
     A4 -.->|"依據身分憑證快照空投"| SC2
 
-    %% 儲存層連線 (嚴謹語法：無多餘空格)
+    %% 儲存層連線
     SC1 <-->|"讀取/寫入"| IPFS
     SC2 <-->|"讀取/寫入"| IPFS
     M3 <-->|"打包上傳/讀取回憶錄"| IPFS
