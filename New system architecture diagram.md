@@ -1,68 +1,67 @@
 ```mermaid
- %%{init: {"flowchart": {"nodeSpacing": 40, "rankSpacing": 150, "padding": 40}}}%%
+ %%{init: {"flowchart": {"nodeSpacing": 40, "rankSpacing": 160, "padding": 40}}}%%
 flowchart LR
-    %% 全局預設字體與線條設定
-    classDef default font-size:22px,font-weight:bold,rx:12,ry:12
-    linkStyle default font-size:18px,font-weight:bold
+    %% 定義顏色與樣式 (安全色碼與圓角)
+    classDef uiNode fill:#ffffff,stroke:#007acc,stroke-width:2px,color:#333333,rx:8,ry:8
+    classDef midNode fill:#ffffff,stroke:#db7093,stroke-width:2px,color:#333333,rx:8,ry:8
+    classDef blockNode fill:#ffffff,stroke:#2e8b57,stroke-width:2px,color:#333333,rx:8,ry:8
+    classDef storageNode fill:#ffffff,stroke:#888888,stroke-width:2px,color:#333333,rx:8,ry:8
 
-    %% 恢復最初的配色 (純白底色 + 安全色碼邊框)
-    classDef uiNode fill:#ffffff,stroke:#007acc,stroke-width:3px,color:#333333
-    classDef midNode fill:#ffffff,stroke:#db7093,stroke-width:3px,color:#333333
-    classDef blockNode fill:#ffffff,stroke:#2e8b57,stroke-width:3px,color:#333333
-    classDef storageNode fill:#ffffff,stroke:#888888,stroke-width:3px,color:#333333
-    
-    %% 外層標題樣式 (增加行距空間)
-    classDef layerStyle fill:#f9fbff,stroke:#bbbbbb,stroke-width:2px,stroke-dasharray: 5 5,color:#333333,font-size:26px,font-weight:bold
-
-    subgraph Layer1 ["【 第一層：使用者互動層 】<br>(純 Web2 UX)"]
+    %% 第一層：使用者互動層
+    subgraph Layer1 ["【 第一層：使用者互動層 User Interface Layer 】(純 Web2 UX)"]
         direction TB
-        %% 依據上到下的連線邏輯排列，避免線條打結
-        A1("💻 後台:\n票券發行"):::uiNode
-        F1("👤 無密碼登入\n(Email/社群)"):::uiNode
-        F2("💳 儲值與法幣支付\n(信用卡/LINE Pay)"):::uiNode
-        F3("🎟️ 數位票夾 &\n資產面板"):::uiNode
-        F5("💬 Live Feed &\n專屬回憶錄"):::uiNode
-        F4("📡 NFC周邊感應"):::uiNode
-        A2("💻 後台:\n任務與空投設定"):::uiNode
+        
+        subgraph FanEnd ["📱 粉絲端 App / Web 介面"]
+            direction TB
+            F1("👤 無密碼登入\n(Email/社群)"):::uiNode
+            F2("💳 法幣支付模組\n(信用卡/行動支付)"):::uiNode
+            F3("🎟️ 數位票夾 &\n任務足跡面板"):::uiNode
+            F4("📡 NFC周邊感應"):::uiNode
+        end
+
+        subgraph AdminEnd ["💻 經紀公司 / 主辦方後台"]
+            direction TB
+            A1("🆕 票券與實體\n周邊發行管理"):::uiNode
+            A2("🎯 任務設定\n(線上/線下足跡)"):::uiNode
+            A3("📊 二手市場與\n大數據監控面板"):::uiNode
+            A4("🎁 長尾福利空投\n(優先購票權/折扣)"):::uiNode
+        end
     end
 
-    subgraph Layer2 ["【 第二層：中介與業務邏輯層 】<br>(Web2.5 橋樑)"]
+    %% 第二層：中介與業務邏輯層
+    subgraph Layer2 ["【 第二層：中介與業務邏輯層 Middleware Layer 】(Web2.5 橋樑)"]
         direction TB
-        M1("🔐 託管錢包服務"):::midNode
-        M2("💰 帳戶金流與代付"):::midNode
-        M3("⚙️ 業務邏輯與社群引擎"):::midNode
-        M4("🛡️ 動態防偽模組"):::midNode
+        M1("🔐 託管錢包服務\n(Custodial Wallet)"):::midNode
+        M2("💸 法幣入金閘道\n(Fiat Gateway)"):::midNode
+        M3("⚙️ 任務與足跡引擎\n(Mission Engine)"):::midNode
+        M4("🛡️ 動態防偽驗證模組\n(動態QR / NFC)"):::midNode
     end
 
-    subgraph Layer3 ["【 第三層：區塊鏈與合約層 】<br>(去中心化基礎)"]
+    %% 第三層：區塊鏈與合約層
+    subgraph Layer3 ["【 第三層：區塊鏈與合約層 Blockchain Layer 】(去中心化信任基礎)"]
         direction TB
-        SC1{{"📝 票務智能合約\n(限購/手續費/候補)"}}:::blockNode
-        IPFS[("📦 去中心化儲存 (IPFS/DB)\n(官方票券/用戶日記)")]:::storageNode
-        SC2{{"🏆 粉絲足跡合約\n(實體綁定/POAP)"}}:::blockNode
+        SC1{{"📝 票務智慧合約\n(唯一鑄造 / 受控轉讓限制)"}}:::blockNode
+        SC2{{"🏆 粉絲足跡合約\n(實體綁定 / POAP 憑證)"}}:::blockNode
+        IPFS[("📦 IPFS 儲存\n(視覺/元數據)")]:::storageNode
     end
 
-    %% 套用外層標題樣式
-    class Layer1,Layer2,Layer3 layerStyle;
+    %% 互動關係線
+    
+    F1 -.-> |"API: 自動生成/授權\n(Custodial Wallet)"| M1
+    F2 ====> |"API: 刷卡支付\n(Gateway / 代付 Gas)"| M2
+    F3 -.-> |"API: 驗證足跡(Gamefication)"| M3
+    F4 -.-> |"API: 硬體加密驗證\n(NFC Verify)"| M4
 
-    %% ================= 互動關係線 (由左至右梳理) =================
-    
-    %% 【上半部動線】：發行、登入、金流 -> 票務合約
-    A1 ----->|"合約部署"| SC1
-    F1 --->|"API授權"| M1
-    F2 --->|"API金流"| M2
-    M1 --->|"Web3互動"| SC1
-    M2 --->|"代付Gas"| SC1
-    
-    %% 【中部動線】：轉讓、社群 -> 業務引擎 -> IPFS儲存
-    F3 --->|"轉讓/候補"| M3
-    F5 <-->|"WebSocket即時互動"| M3
-    M3 --->|"觸發鎖定/分潤"| SC1
-    M3 <-->|"打包上傳回憶錄"| IPFS
-    SC1 <-->|"讀寫票券元資料"| IPFS
-    
-    %% 【下半部動線】：硬體感應、任務設定 -> 足跡合約
-    F4 --->|"API驗證"| M4
-    M4 --->|"驗證鏈上真偽"| SC2
-    A2 ----->|"寫入任務規則"| SC2
-    SC2 <-->|"讀寫足跡資料"| IPFS
+    M1 -.-> |"Web3.js: 錢包互動\n(RPC通訊)"| SC1
+    M2 ====> |"Web3.js: 觸發鑄造 Mint\n(Smart Contract)"| SC1
+    M3 ====> |"RPC: 發放/升級憑證\n(NFT/POAP)"| SC2
+    M4 ====> |"RPC: 驗證鏈上真偽\n(NFC S-NFT)"| SC2
+
+    A1 ====> |"合約部署\n與發行"| SC1
+    A2 ====> |"寫入任務規則\n(Smart Contract)"| SC2
+    A3 -.-> |"API: 撈取監控數據"| M3
+    A4 -.-> |"依據身分憑證\n快照空投"| SC2
+
+    SC1 <--> |"讀取/寫入\n(IPFS API)"| IPFS
+    SC2 <--> |"讀取/寫入\n(IPFS API)"| IPFS
 ```
