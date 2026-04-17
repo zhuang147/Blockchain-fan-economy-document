@@ -4,13 +4,13 @@
     linkStyle default font-size:18px, font-weight:bold;
 
     %% 定義顏色與樣式 (字體全面放大至 26px)
-    classDef uiNode fill:#ffffff,stroke:#007acc,stroke-width:2px,color:#333333,rx:10,ry:10,font-size30px,font-weight:bold
-    classDef midNode fill:#ffffff,stroke:#db7093,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:30px,font-weight:bold
-    classDef blockNode fill:#ffffff,stroke:#2e8b57,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:30px,font-weight:bold
-    classDef storageNode fill:#ffffff,stroke:#888888,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:30px,font-weight:bold
+    classDef uiNode fill:#ffffff,stroke:#007acc,stroke-width:10px,color:#333333,rx:10,ry:10,font-size30px,font-weight:bold
+    classDef midNode fill:#ffffff,stroke:#db7093,stroke-width:10px,color:#333333,rx:10,ry:10,font-size:30px,font-weight:bold
+    classDef blockNode fill:#ffffff,stroke:#2e8b57,stroke-width:10px,color:#333333,rx:10,ry:10,font-size:30px,font-weight:bold
+    classDef storageNode fill:#ffffff,stroke:#888888,stroke-width:10px,color:#333333,rx:10,ry:10,font-size:30px,font-weight:bold
     
     %% 外層標題樣式 (字體放大至 26px)
-    classDef layerStyle fill:#f9fbff,stroke:#bbbbbb,stroke-width:4px,stroke-dasharray: 5 5,font-size:30px,font-weight:bold
+    classDef layerStyle fill:#f9fbff,stroke:#bbbbbb,stroke-width:10px,stroke-dasharray: 5 5,font-size:30px,font-weight:bold
 
     %% 第一層：使用者互動層
     subgraph Layer1 ["【 第一層：使用者互動層 User Interface Layer 】(純 Web2 UX)"]
