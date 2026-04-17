@@ -1,23 +1,21 @@
 ```mermaid
- flowchart TB
+ %%{init: {"flowchart": {"nodeSpacing": 80, "rankSpacing": 150, "padding": 30}}}%%
+flowchart TB
     %% 全域設定：將連線上的文字大幅放大並加粗
     linkStyle default font-size:18px, font-weight:bold;
 
-    %% 定義顏色與樣式 (字體全面放大至 26px)
-    classDef uiNode fill:#ffffff,stroke:#007acc,stroke-width:10px,color:#333333,rx:10,ry:10,font-size50px,font-weight:bold
-    classDef midNode fill:#ffffff,stroke:#db7093,stroke-width:10px,color:#333333,rx:10,ry:10,font-size:30px,font-weight:bold
-    classDef blockNode fill:#ffffff,stroke:#2e8b57,stroke-width:10px,color:#333333,rx:10,ry:10,font-size:30px,font-weight:bold
-    classDef storageNode fill:#ffffff,stroke:#888888,stroke-width:10px,color:#333333,rx:10,ry:10,font-size:30px,font-weight:bold
+    %% 定義顏色與樣式 (字體全面放大至 22px)
+    classDef uiNode fill:#ffffff,stroke:#007acc,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:22px,font-weight:bold
+    classDef midNode fill:#ffffff,stroke:#db7093,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:22px,font-weight:bold
+    classDef blockNode fill:#ffffff,stroke:#2e8b57,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:22px,font-weight:bold
+    classDef storageNode fill:#ffffff,stroke:#888888,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:22px,font-weight:bold
     
     %% 外層標題樣式 (字體放大至 26px)
-    classDef layerStyle fill:#f9fbff,stroke:#bbbbbb,stroke-width:10px,stroke-dasharray: 5 5,font-size:30px,font-weight:bold
+    classDef layerStyle fill:#f9fbff,stroke:#bbbbbb,stroke-width:2px,stroke-dasharray: 5 5,font-size:26px,font-weight:bold
 
     %% 第一層：使用者互動層
     subgraph Layer1 ["【 第一層：使用者互動層 User Interface Layer 】(純 Web2 UX)"]
-        direction LR
-        
         subgraph FanEnd ["📱 粉絲端 App / Web 介面"]
-            direction TB
             F1("👤 無密碼登入\n(Email/社群)"):::uiNode
             F2("💳 儲值與法幣支付\n(信用卡/行動支付/LINE Pay)"):::uiNode
             F3("🎟️ 數位票夾 &\n資產管理面板"):::uiNode
@@ -26,7 +24,6 @@
         end
 
         subgraph AdminEnd ["💻 經紀公司 / 主辦方後台"]
-            direction TB
             A1("🆕 票券與實體\n周邊發行管理"):::uiNode
             A2("🎯 任務設定\n(線上/線下足跡)"):::uiNode
             A3("📊 二手市場與\n大數據監控面板"):::uiNode
@@ -36,7 +33,6 @@
 
     %% 第二層：中介與業務邏輯層
     subgraph Layer2 ["【 第二層：中介與業務邏輯層 Middleware Layer 】(Web2.5 橋樑)"]
-        direction LR
         M1("🔐 託管錢包服務\n(Custodial Wallet)"):::midNode
         M2("💰 帳戶餘額與金流\n(法幣入金閘道 / 代付 Gas Fee)"):::midNode
         M3("⚙️ 業務邏輯與社群引擎\n(候補碼系統 / 即時廣播)"):::midNode
@@ -45,7 +41,6 @@
 
     %% 第三層：區塊鏈與合約層
     subgraph Layer3 ["【 第三層：區塊鏈與合約層 Blockchain Layer 】(去中心化信任基礎)"]
-        direction LR
         SC1{{"📝 票務智能合約\n(4張限購 / 5%手續費 / 24h候補鎖定)"}}:::blockNode
         SC2{{"🏆 粉絲足跡合約\n(實體綁定 / POAP 憑證)"}}:::blockNode
         IPFS[("📦 去中心化儲存 (IPFS/DB)\n(官方票券元數據 / 用戶心情日記)")]:::storageNode
@@ -56,7 +51,7 @@
 
     %% ---------------- 互動關係線 ----------------
     
-    %% Layer 1 到 Layer 2 的連線
+    %% Layer 1 到 Layer 2 的連線 (拉長箭頭增加空間)
     F1 -.->|"API: 自動生成/授權"| M1
     F2 ====>|"API: 儲值/扣款"| M2
     F3 -.->|"API: 發起轉讓/輸入候補碼"| M3
