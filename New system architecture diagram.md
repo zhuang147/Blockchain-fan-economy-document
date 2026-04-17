@@ -1,14 +1,18 @@
 ```mermaid
-flowchart LR
-    %% 定義顏色與樣式 (安全色碼與圓角)
-    classDef uiNode fill:#ffffff,stroke:#007acc,stroke-width:2px,color:#333333,rx:8,ry:8
-    classDef midNode fill:#ffffff,stroke:#db7093,stroke-width:2px,color:#333333,rx:8,ry:8
-    classDef blockNode fill:#ffffff,stroke:#2e8b57,stroke-width:2px,color:#333333,rx:8,ry:8
-    classDef storageNode fill:#ffffff,stroke:#888888,stroke-width:2px,color:#333333,rx:8,ry:8
+flowchart TB
+    %% 全域設定：調整連線上的文字大小與粗細
+    linkStyle default font-size:14px, font-weight:bold;
+
+    %% 定義顏色與樣式 (加入字體放大、粗體與圓角設定)
+    classDef uiNode fill:#ffffff,stroke:#007acc,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:16px,font-weight:bold
+    classDef midNode fill:#ffffff,stroke:#db7093,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:16px,font-weight:bold
+    classDef blockNode fill:#ffffff,stroke:#2e8b57,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:16px,font-weight:bold
+    classDef storageNode fill:#ffffff,stroke:#888888,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:16px,font-weight:bold
+    classDef layerStyle fill:#f9fbff,stroke:#bbbbbb,stroke-width:2px,stroke-dasharray: 5 5,font-size:18px,font-weight:bold
 
     %% 第一層：使用者互動層
     subgraph Layer1 ["【 第一層：使用者互動層 User Interface Layer 】(純 Web2 UX)"]
-        direction TB
+        direction LR
         
         subgraph FanEnd ["📱 粉絲端 App / Web 介面"]
             direction TB
@@ -30,7 +34,7 @@ flowchart LR
 
     %% 第二層：中介與業務邏輯層
     subgraph Layer2 ["【 第二層：中介與業務邏輯層 Middleware Layer 】(Web2.5 橋樑)"]
-        direction TB
+        direction LR
         M1("🔐 託管錢包服務\n(Custodial Wallet)"):::midNode
         M2("💰 帳戶餘額與金流\n(法幣入金閘道 / 代付 Gas Fee)"):::midNode
         M3("⚙️ 業務邏輯與社群引擎\n(候補碼系統 / 即時廣播)"):::midNode
@@ -39,35 +43,40 @@ flowchart LR
 
     %% 第三層：區塊鏈與合約層
     subgraph Layer3 ["【 第三層：區塊鏈與合約層 Blockchain Layer 】(去中心化信任基礎)"]
-        direction TB
+        direction LR
         SC1{{"📝 票務智能合約\n(4張限購 / 5%手續費 / 24h候補鎖定)"}}:::blockNode
         SC2{{"🏆 粉絲足跡合約\n(實體綁定 / POAP 憑證)"}}:::blockNode
         IPFS[("📦 去中心化儲存 (IPFS/DB)\n(官方票券元數據 / 用戶心情日記)")]:::storageNode
     end
 
-    %% 互動關係線
+    %% 替外層的 Subgraph 套用樣式，增加區隔感
+    class Layer1,Layer2,Layer3 layerStyle;
+
+    %% ---------------- 互動關係線 ----------------
     
-    F1 -.-> |"API: 自動生成/授權"| M1
-    F2 ====> |"API: 儲值/扣款"| M2
-    F3 -.-> |"API: 發起轉讓/輸入候補碼"| M3
-    F4 -.-> |"API: 硬體加密驗證"| M4
+    %% Layer 1 到 Layer 2 的連線
+    F1 -.->|"API: 自動生成/授權"| M1
+    F2 ====>|"API: 儲值/扣款"| M2
+    F3 -.->|"API: 發起轉讓/輸入候補碼"| M3
+    F4 -.->|"API: 硬體加密驗證"| M4
     
-    %% Live Feed 與引擎的雙向互動
-    M3 -.-> |"WebSocket/Realtime:\n即時廣播交易動態"| F5
+    %% Live Feed 的雙向資料流 (由後端 M3 統一代為上傳 IPFS)
+    M3 -.->|"WebSocket: 即時廣播交易動態"| F5
+    F5 -.->|"API: 發布回憶錄"| M3
 
-    %% 中介層對接區塊鏈
-    M1 -.-> |"Web3.js: 錢包互動 (RPC)"| SC1
-    M2 ====> |"Web3.js: 觸發購票/代付Gas"| SC1
-    M3 ====> |"觸發合約:\n鎖定24h / 轉移資產與分潤"| SC1
-    M4 ====> |"RPC: 驗證鏈上真偽"| SC2
+    %% Layer 2 到 Layer 3 的連線
+    M1 -.->|"Web3.js: 錢包互動 (RPC)"| SC1
+    M2 ====>|"Web3.js: 觸發購票/代付Gas"| SC1
+    M3 ====>|"觸發合約: 鎖定24h / 轉移與分潤"| SC1
+    M4 ====>|"RPC: 驗證鏈上真偽"| SC2
 
-    %% 後台操作
-    A1 ====> |"合約部署與發行"| SC1
-    A2 ====> |"寫入任務規則"| SC2
-    A4 -.-> |"依據身分憑證快照空投"| SC2
+    %% 後台操作連線
+    A1 ====>|"合約部署與發行"| SC1
+    A2 ====>|"寫入任務規則"| SC2
+    A4 -.->|"依據身分憑證快照空投"| SC2
 
-    %% 儲存層互動
-    SC1 <--> |"讀取/寫入"| IPFS
-    SC2 <--> |"讀取/寫入"| IPFS
-    F5 <--> |"存取/上傳回憶錄"| IPFS
+    %% 儲存層連線 (嚴謹語法：無多餘空格)
+    SC1 <-->|"讀取/寫入"| IPFS
+    SC2 <-->|"讀取/寫入"| IPFS
+    M3 <-->|"打包上傳/讀取回憶錄"| IPFS
 ```
