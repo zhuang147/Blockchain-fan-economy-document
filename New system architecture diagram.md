@@ -5,12 +5,14 @@ flowchart TB
     classDef default font-size:22px,font-weight:bold,rx:12,ry:12
     linkStyle default font-size:18px,font-weight:bold
 
-    %% 特定區塊的顏色與邊框設定
-    classDef uiNode fill:#f0f8ff,stroke:#007acc,stroke-width:3px,color:#000
-    classDef midNode fill:#fff0f5,stroke:#db7093,stroke-width:3px,color:#000
-    classDef blockNode fill:#f0fff0,stroke:#2e8b57,stroke-width:3px,color:#000
-    classDef storageNode fill:#f5f5f5,stroke:#888888,stroke-width:3px,color:#000
-    classDef layerStyle fill:#ffffff,stroke:#333333,stroke-width:2px,stroke-dasharray: 5 5,font-size:28px,font-weight:bold
+    %% 恢復您最初的配色 (純白底色 + 安全色碼邊框)
+    classDef uiNode fill:#ffffff,stroke:#007acc,stroke-width:3px,color:#333333
+    classDef midNode fill:#ffffff,stroke:#db7093,stroke-width:3px,color:#333333
+    classDef blockNode fill:#ffffff,stroke:#2e8b57,stroke-width:3px,color:#333333
+    classDef storageNode fill:#ffffff,stroke:#888888,stroke-width:3px,color:#333333
+    
+    %% 外層標題樣式
+    classDef layerStyle fill:#f9fbff,stroke:#bbbbbb,stroke-width:2px,stroke-dasharray: 5 5,color:#333333,font-size:28px,font-weight:bold
 
     subgraph Layer1 ["【 第一層：使用者互動層 User Interface Layer 】(純 Web2 UX)"]
         %% 依據左、中、右的連線邏輯重新排列節點
