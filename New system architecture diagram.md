@@ -1,79 +1,72 @@
 ```mermaid
- %%{init: {"flowchart": {"nodeSpacing": 80, "rankSpacing": 150, "padding": 30}}}%%
+ %%{init: {"flowchart": {"nodeSpacing": 60, "rankSpacing": 180, "padding": 40}}}%%
 flowchart TB
-    %% 全域設定：將連線上的文字大幅放大並加粗
-    linkStyle default font-size:18px, font-weight:bold;
+    %% 全局預設字體與線條設定
+    classDef default font-size:22px,font-weight:bold,rx:12,ry:12
+    linkStyle default font-size:18px,font-weight:bold
 
-    %% 定義顏色與樣式 (字體全面放大至 22px)
-    classDef uiNode fill:#ffffff,stroke:#007acc,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:22px,font-weight:bold
-    classDef midNode fill:#ffffff,stroke:#db7093,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:22px,font-weight:bold
-    classDef blockNode fill:#ffffff,stroke:#2e8b57,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:22px,font-weight:bold
-    classDef storageNode fill:#ffffff,stroke:#888888,stroke-width:2px,color:#333333,rx:10,ry:10,font-size:22px,font-weight:bold
-    
-    %% 外層標題樣式 (字體放大至 26px)
-    classDef layerStyle fill:#f9fbff,stroke:#bbbbbb,stroke-width:2px,stroke-dasharray: 5 5,font-size:26px,font-weight:bold
+    %% 特定區塊的顏色與邊框設定
+    classDef uiNode fill:#f0f8ff,stroke:#007acc,stroke-width:3px,color:#000
+    classDef midNode fill:#fff0f5,stroke:#db7093,stroke-width:3px,color:#000
+    classDef blockNode fill:#f0fff0,stroke:#2e8b57,stroke-width:3px,color:#000
+    classDef storageNode fill:#f5f5f5,stroke:#888888,stroke-width:3px,color:#000
+    classDef layerStyle fill:#ffffff,stroke:#333333,stroke-width:2px,stroke-dasharray: 5 5,font-size:28px,font-weight:bold
 
-    %% 第一層：使用者互動層
     subgraph Layer1 ["【 第一層：使用者互動層 User Interface Layer 】(純 Web2 UX)"]
-        subgraph FanEnd ["📱 粉絲端 App / Web 介面"]
-            F1("👤 無密碼登入\n(Email/社群)"):::uiNode
-            F2("💳 儲值與法幣支付\n(信用卡/行動支付/LINE Pay)"):::uiNode
-            F3("🎟️ 數位票夾 &\n資產管理面板"):::uiNode
-            F5("💬 Live Feed &\n專屬回憶錄"):::uiNode
-            F4("📡 NFC周邊感應"):::uiNode
-        end
-
-        subgraph AdminEnd ["💻 經紀公司 / 主辦方後台"]
-            A1("🆕 票券與實體\n周邊發行管理"):::uiNode
-            A2("🎯 任務設定\n(線上/線下足跡)"):::uiNode
-            A3("📊 二手市場與\n大數據監控面板"):::uiNode
-            A4("🎁 長尾福利空投\n(優先購票權/折扣)"):::uiNode
-        end
+        %% 依據左、中、右的連線邏輯重新排列節點
+        A1("💻 後台:\n票券發行"):::uiNode
+        F1("👤 無密碼登入\n(Email/社群)"):::uiNode
+        F2("💳 儲值與法幣支付\n(信用卡/LINE Pay)"):::uiNode
+        F3("🎟️ 數位票夾 &\n資產面板"):::uiNode
+        F5("💬 Live Feed &\n專屬回憶錄"):::uiNode
+        F4("📡 NFC周邊感應"):::uiNode
+        A2("💻 後台:\n任務與空投設定"):::uiNode
+        
+        %% 使用隱藏線強制橫向排版 (完美防交錯關鍵)
+        A1 ~~~ F1 ~~~ F2 ~~~ F3 ~~~ F5 ~~~ F4 ~~~ A2
     end
 
-    %% 第二層：中介與業務邏輯層
     subgraph Layer2 ["【 第二層：中介與業務邏輯層 Middleware Layer 】(Web2.5 橋樑)"]
-        M1("🔐 託管錢包服務\n(Custodial Wallet)"):::midNode
-        M2("💰 帳戶餘額與金流\n(法幣入金閘道 / 代付 Gas Fee)"):::midNode
-        M3("⚙️ 業務邏輯與社群引擎\n(候補碼系統 / 即時廣播)"):::midNode
-        M4("🛡️ 動態防偽驗證模組\n(動態QR / NFC)"):::midNode
+        M1("🔐 託管錢包服務"):::midNode
+        M2("💰 帳戶金流與代付"):::midNode
+        M3("⚙️ 業務邏輯與社群引擎"):::midNode
+        M4("🛡️ 動態防偽模組"):::midNode
+        
+        %% 強制對齊上層節點
+        M1 ~~~ M2 ~~~ M3 ~~~ M4
     end
 
-    %% 第三層：區塊鏈與合約層
-    subgraph Layer3 ["【 第三層：區塊鏈與合約層 Blockchain Layer 】(去中心化信任基礎)"]
-        SC1{{"📝 票務智能合約\n(4張限購 / 5%手續費 / 24h候補鎖定)"}}:::blockNode
-        SC2{{"🏆 粉絲足跡合約\n(實體綁定 / POAP 憑證)"}}:::blockNode
-        IPFS[("📦 去中心化儲存 (IPFS/DB)\n(官方票券元數據 / 用戶心情日記)")]:::storageNode
+    subgraph Layer3 ["【 第三層：區塊鏈與合約層 Blockchain Layer 】(去中心化基礎)"]
+        SC1{{"📝 票務智能合約\n(限購/手續費/候補)"}}:::blockNode
+        IPFS[("📦 去中心化儲存 (IPFS/DB)\n(官方票券/用戶日記)")]:::storageNode
+        SC2{{"🏆 粉絲足跡合約\n(實體綁定/POAP)"}}:::blockNode
+        
+        %% 強制對齊上層節點
+        SC1 ~~~ IPFS ~~~ SC2
     end
 
-    %% 替外層的 Subgraph 套用標題放大樣式
+    %% 套用外層標題樣式
     class Layer1,Layer2,Layer3 layerStyle;
 
-    %% ---------------- 互動關係線 ----------------
+    %% ================= 互動關係線 (梳理不交叉) =================
     
-    %% Layer 1 到 Layer 2 的連線 (拉長箭頭增加空間)
-    F1 -.->|"API: 自動生成/授權"| M1
-    F2 ====>|"API: 儲值/扣款"| M2
-    F3 -.->|"API: 發起轉讓/輸入候補碼"| M3
-    F4 -.->|"API: 硬體加密驗證"| M4
+    %% 【左側動線】：發行、登入、金流 -> 票務合約
+    A1 ----->|"合約部署"| SC1
+    F1 --->|"API授權"| M1
+    F2 --->|"API金流"| M2
+    M1 --->|"Web3互動"| SC1
+    M2 --->|"代付Gas"| SC1
     
-    %% Live Feed 的雙向資料流
-    M3 -.->|"WebSocket: 即時廣播交易動態"| F5
-    F5 -.->|"API: 發布回憶錄"| M3
-
-    %% Layer 2 到 Layer 3 的連線
-    M1 -.->|"Web3.js: 錢包互動 (RPC)"| SC1
-    M2 ====>|"Web3.js: 觸發購票/代付Gas"| SC1
-    M3 ====>|"觸發合約: 鎖定24h / 轉移與分潤"| SC1
-    M4 ====>|"RPC: 驗證鏈上真偽"| SC2
-
-    %% 後台操作連線
-    A1 ====>|"合約部署與發行"| SC1
-    A2 ====>|"寫入任務規則"| SC2
-    A4 -.->|"依據身分憑證快照空投"| SC2
-
-    %% 儲存層連線
-    SC1 <-->|"讀取/寫入"| IPFS
-    SC2 <-->|"讀取/寫入"| IPFS
-    M3 <-->|"打包上傳/讀取回憶錄"| IPFS
+    %% 【中央動線】：轉讓、社群 -> 業務引擎 -> IPFS儲存
+    F3 --->|"轉讓/候補"| M3
+    F5 <-->|"WebSocket即時互動"| M3
+    M3 --->|"觸發鎖定/分潤"| SC1
+    M3 <-->|"打包上傳回憶錄"| IPFS
+    SC1 <-->|"讀寫票券元資料"| IPFS
+    
+    %% 【右側動線】：硬體感應、任務設定 -> 足跡合約
+    F4 --->|"API驗證"| M4
+    M4 --->|"驗證鏈上真偽"| SC2
+    A2 ----->|"寫入任務規則"| SC2
+    SC2 <-->|"讀寫足跡資料"| IPFS
 ```
