@@ -1,4 +1,5 @@
 flowchart LR
+```mermaid
     %% 定義顏色與樣式 (安全色碼與圓角)
     classDef uiNode fill:#ffffff,stroke:#007acc,stroke-width:2px,color:#333333,rx:8,ry:8
     classDef midNode fill:#ffffff,stroke:#db7093,stroke-width:2px,color:#333333,rx:8,ry:8
@@ -64,7 +65,7 @@ flowchart LR
     A1 ====> |"合約部署與發行"| SC1
     A2 ====> |"寫入任務規則"| SC2
     A4 -.-> |"依據身分憑證快照空投"| SC2
-
+```
     %% 儲存層互動
     SC1 <--> |"讀取/寫入"| IPFS
     SC2 <--> |"讀取/寫入"| IPFS
