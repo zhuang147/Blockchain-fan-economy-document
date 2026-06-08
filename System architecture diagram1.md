@@ -12,7 +12,7 @@ A5[LiveFeed]
 A6[store.js]
 end
 
-subgraph Backend[Backend API]
+subgraph Backend[後端層]
 B1[Express Server]
 B2[profiles API]
 B3[user-tickets API]
@@ -21,7 +21,7 @@ B5[feed API]
 B6[second-hand API]
 end
 
-subgraph Database[Supabase]
+subgraph Database[資料庫層]
 C1[profiles]
 C2[user_tickets]
 C3[global_tickets]
@@ -42,7 +42,7 @@ U --> A2
 U --> A3
 U --> A4
 
-A6 --> B1
+A6 --> |呼叫 API| B1
 
 B1 --> B2
 B1 --> B3
@@ -61,9 +61,10 @@ A2 --> D1
 A3 --> D1
 A4 --> D1
 
-D1 --> D2
+D1 --> |簽署交易| D2
 D2 --> D3
 D2 --> D4
+
 ```
 
 ---
