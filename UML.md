@@ -92,4 +92,55 @@ flowchart LR
     class TicketModule,MerchModule,LongTailModule,AdminModule module;
 ```
 ---
+
+```mermaid
+graph LR
+    %% 節點樣式定義
+    classDef actor fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef usecase fill:#fff,stroke:#0366d6,stroke-width:2px,shape:oval;
+    classDef boundary fill:#f6f8fa,stroke:#e1e4e6,stroke-width:2px,stroke-dasharray: 5 5;
+
+    %% 角色定義 (Actors)
+    User["👤 使用者 / 粉絲<br>(User / Fan)"]:::actor
+    XRPL["⛓️ XRPL 區塊鏈生態<br>(External Ledger / Xaman)"]:::actor
+
+    %% 系統邊界與使用案例 (System Boundary & Use Cases)
+    subgraph SystemBoundary["Web 2.5 票務與粉絲生態系統 (MOON-BASE)"]
+        %% 登入模組
+        UC1("(UC1) 透過錢包身分驗證登入"):::usecase
+        
+        %% 票券瀏覽與購買模組
+        UC2("(UC2) 瀏覽官方活動與票券庫存"):::usecase
+        UC3("(UC3) 線上購買官方票券 (確權)"):::usecase
+        
+        %% 個人票券管理模組
+        UC4("(UC4) 查看與管理個人數位票券"):::usecase
+        
+        %% 受控二手交易模組
+        UC5("(UC5) 發起受控讓票機制 (設定候補碼)"):::usecase
+        UC6("(UC6) 媒合購入受控二手票券"):::usecase
+        
+        %% 即時動態社群模組
+        UC7("(UC7) 瀏覽與發布社群即時動態"):::usecase
+    end
+
+    %% 使用者與使用案例的關聯 (Associations)
+    User --> UC1
+    User --> UC2
+    User --> UC3
+    User --> UC4
+    User --> UC5
+    User --> UC6
+    User --> UC7
+
+    %% 使用案例與外部區塊鏈生態的互動關聯
+    UC1 -.->|Xaman 驗證| XRPL
+    UC3 -.->|簽署交易 / Mint NFT| XRPL
+    UC5 -.->|變更轉讓規則狀態| XRPL
+    UC6 -.->|簽署交易 / Transfer NFT| XRPL
+
+    %% 調整圖表層次結構
+    style SystemBoundary boundary
+```
+---
 ## 循環圖
