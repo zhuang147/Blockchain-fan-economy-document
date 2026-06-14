@@ -18,7 +18,7 @@ sequenceDiagram
     Wallet->>User: 顯示交易確認畫面
     User->>Wallet: 確認付款
 
-    Wallet->>XRPL: 提交 PTS Token 交易
+    Wallet->>XRPL: 簽署並提交付款交易
     XRPL-->>Wallet: 回傳交易結果
 
     Wallet-->>Frontend: 回傳交易成功資訊
