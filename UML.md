@@ -127,5 +127,3 @@ graph LR
     %% 調整圖表層次結構
     style SystemBoundary boundary
 ```
----
-## 循環圖
