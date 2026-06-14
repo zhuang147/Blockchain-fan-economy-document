@@ -1,4 +1,4 @@
-
+```mermaid
 sequenceDiagram
     participant User as 粉絲使用者
     participant Frontend as Vue.js 前端
@@ -31,3 +31,4 @@ sequenceDiagram
     Backend-->>Frontend: 回傳購票成功訊息
 
     Frontend-->>User: 顯示購票結果與我的票券
+```
